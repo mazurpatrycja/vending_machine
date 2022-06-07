@@ -3,8 +3,29 @@ from platform import machine
 
 class VendingMachine:
     def __init__(self) -> None:
-        self.wallet = 0
+        self.wallet = []
         self.bank = 0  # Money for exchange
+        self.status = ""
+
+    def check_and_add_coin(self, machine_type, coin):
+        # Check if added coin is allowed.
+        coffe_machine_coins = [1, 0.5]
+        drink_machine_coins = [1, 0.5, 0.2, 0.1, 0.05]
+        snack_machine_coins = [1, 0.5, 0.2, 0.1]
+
+        if machine_type == "coffee_machine" and coin in coffe_machine_coins:
+            self.wallet.append(coin)
+        elif machine_type == "dring_machine" and coin in drink_machine_coins:
+            self.wallet.append(coin)
+        elif machine_type == "snack_machine" and coin in snack_machine_coins:
+            self.wallet.append(coin)
+        else:
+            self.status = "Not Allowed Coin"
+
+        # Calculate how much money the customer has.
+        money = sum(self.wallet)
+
+        return money
 
     def get_price(self, machine_type, chosen_product):
         if machine_type == "coffee_machine":
@@ -32,3 +53,15 @@ class VendingMachine:
                 price = 0.7
 
         return price
+
+
+if __name__ == "__main__":
+    machine = VendingMachine()
+    price = machine.get_price("coffee_machine", "hot_chocolate")
+    print(price)
+    money = machine.check_and_add_coin("coffee_machine", 1)
+    print(money)
+    money = machine.check_and_add_coin("coffee_machine", 1)
+    print(money)
+    money = machine.check_and_add_coin("coffee_machine", 5)
+    print(money)
