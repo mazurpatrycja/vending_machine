@@ -1,6 +1,7 @@
 class VendingMachine:
     def __init__(self) -> None:
         self.wallet = []
+        self.money = 0  # Sum of money in the wallet
         self.bank = 1000  # Money for exchange
         self.status = ""
 
@@ -21,9 +22,7 @@ class VendingMachine:
             self.status = "Not Allowed Coin"
 
         # Calculate how much money the customer has.
-        money = sum(self.wallet)
-
-        return money
+        self.money = sum(self.wallet)
 
     def get_price(self, machine_type, chosen_product):
         if machine_type == "coffee_machine":
@@ -52,14 +51,19 @@ class VendingMachine:
 
         return price
 
-    def buy_product(self, money, price):
-        if money < price:
+    def buy_product(self, price):
+        if self.money < price:
             self.status = "Not Enough Money"
-        elif (money - price) > self.bank:
+        elif (self.money - price) > self.bank:
             self.status = "No Change"
         else:
-            self.status = "Bought product. Change: " + str(money - price)
+            self.status = "Bought product. Change: " + str(self.money - price)
             self.bank = self.bank + price
+
+    def decline_purchase(self):
+        # Return all money to the customer.
+        self.wallet = []
+        self.money = 0
 
 
 if __name__ == "__main__":
@@ -67,12 +71,12 @@ if __name__ == "__main__":
     price = machine.get_price("coffee_machine", "hot_chocolate")
     print(price)
 
-    money = machine.check_and_add_coin("coffee_machine", 1)
-    print(money)
-    money = machine.check_and_add_coin("coffee_machine", 0.5)
-    print(money)
-    money = machine.check_and_add_coin("coffee_machine", 5)
-    print(money)
+    machine.check_and_add_coin("coffee_machine", 1)
+    print(machine.money)
+    machine.check_and_add_coin("coffee_machine", 0.5)
+    print(machine.money)
+    machine.check_and_add_coin("coffee_machine", 5)
+    print(machine.money)
 
-    machine.buy_product(money, price)
+    machine.buy_product(price)
     print(machine.status)
