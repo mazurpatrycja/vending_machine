@@ -1,6 +1,3 @@
-from platform import machine
-
-
 class VendingMachine:
     def __init__(self) -> None:
         self.wallet = []
