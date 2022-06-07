@@ -4,10 +4,11 @@ from platform import machine
 class VendingMachine:
     def __init__(self) -> None:
         self.wallet = []
-        self.bank = 0  # Money for exchange
+        self.bank = 1000  # Money for exchange
         self.status = ""
 
     def check_and_add_coin(self, machine_type, coin):
+        self.status = ""  # Reset status.
         # Check if added coin is allowed.
         coffe_machine_coins = [1, 0.5]
         drink_machine_coins = [1, 0.5, 0.2, 0.1, 0.05]
@@ -54,14 +55,27 @@ class VendingMachine:
 
         return price
 
+    def buy_product(self, money, price):
+        if money < price:
+            self.status = "Not Enough Money"
+        elif (money - price) > self.bank:
+            self.status = "No Change"
+        else:
+            self.status = "Bought product. Change: " + str(money - price)
+            self.bank = self.bank + price
+
 
 if __name__ == "__main__":
     machine = VendingMachine()
     price = machine.get_price("coffee_machine", "hot_chocolate")
     print(price)
+
     money = machine.check_and_add_coin("coffee_machine", 1)
     print(money)
-    money = machine.check_and_add_coin("coffee_machine", 1)
+    money = machine.check_and_add_coin("coffee_machine", 0.5)
     print(money)
     money = machine.check_and_add_coin("coffee_machine", 5)
     print(money)
+
+    machine.buy_product(money, price)
+    print(machine.status)
