@@ -8,7 +8,7 @@ class VendingMachine:
         self.ones = 20  # The amount of 1 Euro.
         self.fifties = 20  # The amount of 50 Eurocent.
         self.twenties = 20  # The amount of 20 Eurocent.
-        self.dimes = 0  # The amount of 10 Eurocent.
+        self.dimes = 20  # The amount of 10 Eurocent.
         self.nickels = 20  # The amount of 5 Eurocent.
 
     def check_and_add_coin(self, machine_type, coin):
