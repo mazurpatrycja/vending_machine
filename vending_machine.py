@@ -1,3 +1,6 @@
+import json
+
+
 class VendingMachine:
     def __init__(self) -> None:
         self.wallet = []
@@ -5,11 +8,11 @@ class VendingMachine:
         self.status = ""
 
         # Money for exchange
-        self.ones = 20  # The amount of 1 Euro.
-        self.fifties = 20  # The amount of 50 Eurocent.
-        self.twenties = 20  # The amount of 20 Eurocent.
-        self.dimes = 20  # The amount of 10 Eurocent.
-        self.nickels = 20  # The amount of 5 Eurocent.
+        self.ones = 20  # The amount of: 1 Euro,
+        self.fifties = 20  # 50 Eurocent,
+        self.twenties = 20  # 20 Eurocent,
+        self.dimes = 20  # 10 Eurocent,
+        self.nickels = 20  # 5 Eurocent.
 
     def check_and_add_coin(self, machine_type, coin):
         self.status = ""  # Reset status.
@@ -33,29 +36,10 @@ class VendingMachine:
         self.money = sum(self.wallet)
 
     def get_price(self, machine_type, chosen_product):
-        if machine_type == "coffee_machine":
-            if chosen_product == "coffee":
-                price = 150
-            elif chosen_product == "hot_chocolate":
-                price = 100
-            elif chosen_product == "hot_water":
-                price = 50
+        file = open("products.json")
+        products = json.load(file)
 
-        if machine_type == "drink_machine":
-            if chosen_product == "coke":
-                price = 120
-            elif chosen_product == "water":
-                price = 75
-
-        if machine_type == "snack_machine":
-            if chosen_product == "mms":
-                price = 250
-            elif chosen_product == "chips":
-                price = 190
-            elif chosen_product == "snickers":
-                price = 130
-            elif chosen_product == "pantera_rosa":
-                price = 70
+        price = products[machine_type][chosen_product]
 
         return price
 
@@ -165,6 +149,6 @@ if __name__ == "__main__":
     print("price:", price)
     print("money", machine.money)
     change = machine.buy_product_and_get_change(price)
-    machine.add_costumers_money_to_machine(change)
+    machine.add_costumer_money_to_machine(change)
     print(machine.ones)
     print(machine.status)
