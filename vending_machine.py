@@ -1,7 +1,7 @@
 class VendingMachine:
     def __init__(self) -> None:
         self.wallet = []
-        self.money = 0.0  # Sum of money in the wallet
+        self.money = 0  # Sum of money in the wallet
         self.status = ""
 
         # Money for exchange
@@ -131,6 +131,22 @@ class VendingMachine:
         else:
             self.status = "No change"
 
+        return change
+
+    def add_costumer_money_to_machine(self, change):
+        if change == 0:
+            for coin in self.wallet:
+                if coin == 100:
+                    self.ones += 1
+                elif coin == 50:
+                    self.fifties += 1
+                elif coin == 20:
+                    self.twenties += 1
+                elif coin == 10:
+                    self.dimes += 1
+                elif coin == 5:
+                    self.nickels += 1
+
     def decline_purchase(self):
         # Return all money to the customer.
         self.wallet = []
@@ -148,5 +164,7 @@ if __name__ == "__main__":
     price = machine.get_price("drink_machine", "coke")
     print("price:", price)
     print("money", machine.money)
-    machine.buy_product_and_get_change(price)
+    change = machine.buy_product_and_get_change(price)
+    machine.add_costumers_money_to_machine(change)
+    print(machine.ones)
     print(machine.status)
