@@ -65,11 +65,22 @@ class VendingMachine:
 
         return price
 
-    def buy_product_and_get_change(self, price):
+    def enough_money_check(self, price, chosen_product):
         if self.money < price:
             self.status = "Not Enough Money"
-            return
+            message = (
+                self.welcome_message
+                + str(self.money / 100)
+                + " EUR "
+                + self.status
+            )
+            self.GUI.threadclass.signal_change_status.emit(message)
+            return "NO"
+        else:
+            self.GUI.threadclass.signal_disable_buttons.emit(chosen_product)
+            return "YES"
 
+    def prepare_product_and_get_change(self, price):
         change = round(self.money - price, 2)
         change_dict = {}
 
