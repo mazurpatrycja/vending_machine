@@ -11,11 +11,11 @@ class VendingMachine:
         self.status = ""
 
         # Money for exchange
-        self.ones = 20  # The amount of: 1 Euro,
-        self.fifties = 20  # 50 Eurocent,
-        self.twenties = 20  # 20 Eurocent,
-        self.dimes = 20  # 10 Eurocent,
-        self.nickels = 20  # 5 Eurocent.
+        self.ones = 0  # The amount of: 1 Euro,
+        self.fifties = 0  # 50 Eurocent,
+        self.twenties = 0  # 20 Eurocent,
+        self.dimes = 0  # 10 Eurocent,
+        self.nickels = 0  # 5 Eurocent.
 
         self.welcome_message = (
             "Hello! Insert coins and choose product.\nMoney: "
@@ -164,13 +164,14 @@ class VendingMachine:
             )
             self.GUI.threadclass.signal_change_status.emit(message)
         else:
-            self.status = "No change"
-            message = self.status + str(self.money / 100) + " EUR "
+            self.status = "No change."
+            message = self.status + " Money returned."
             self.GUI.threadclass.signal_change_status.emit(message)
 
         return change
 
-    def add_costumer_money_to_machine(self, change):
+    def take_money_and_reset_machine(self, change):
+        # Add money to machine if the product was bought.
         if change == 0:
             for coin in self.wallet:
                 if coin == 100:
@@ -183,6 +184,15 @@ class VendingMachine:
                     self.dimes += 1
                 elif coin == 5:
                     self.nickels += 1
+
+        # Reset machine to unlock buying another product.
+        self.wallet = []
+        self.money = 0
+        time.sleep(2)
+        message = self.welcome_message + "0 EUR "
+        self.GUI.threadclass.signal_change_status.emit(message)
+        self.GUI.threadclass.signal_progress_bar.emit(-1)
+        self.GUI.threadclass.signal_reset_buttons.emit()
 
     def decline_purchase(self):
         # Return all money to the customer.

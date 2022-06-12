@@ -32,6 +32,7 @@ class MainWindow(QWidget):
         self.threadclass.signal_change_status.connect(self.change_status)
         self.threadclass.signal_disable_buttons.connect(self.disable_buttons)
         self.threadclass.signal_progress_bar.connect(self.update_progress_bar)
+        self.threadclass.signal_reset_buttons.connect(self.reset_buttons)
 
     def change_behavior(self, next_behavior):
         self.behavior = next_behavior
@@ -66,6 +67,13 @@ class MainWindow(QWidget):
         else:
             self.ui.progressbar.setMaximumHeight(0)
 
+    def reset_buttons(self):
+        self.ui.pushButton_add_coin.setEnabled(True)
+        self.ui.pushButton_cancel.setEnabled(True)
+        self.ui.pushButton_choco.setEnabled(True)
+        self.ui.pushButton_coffee.setEnabled(True)
+        self.ui.pushButton_water.setEnabled(True)
+
 
 class ThreadClass(QThread):
     def __init__(self, parent=MainWindow) -> None:
@@ -74,6 +82,7 @@ class ThreadClass(QThread):
     signal_change_status = Signal(str)
     signal_disable_buttons = Signal(str)
     signal_progress_bar = Signal(int)
+    signal_reset_buttons = Signal()
 
     def run(self):
         if window.behavior == "insert_coin":
@@ -87,7 +96,7 @@ class ThreadClass(QThread):
             answer = gui_functions.enough_money_check(price, "coffee")
             if answer == "YES":
                 change = gui_functions.prepare_product_and_get_change(price)
-            # gui_functions.add_costumer_money_to_machine(change)
+                gui_functions.take_money_and_reset_machine(change)
 
 
 if __name__ == "__main__":
