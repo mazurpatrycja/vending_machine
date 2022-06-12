@@ -71,7 +71,7 @@ class MainWindow(QWidget):
                 self.ui.progressbar.setMaximumHeight(28)  # Show progress bar.
             self.ui.progressbar.setValue(progress)
         else:
-            self.ui.progressbar.setMaximumHeight(0)
+            self.ui.progressbar.setMaximumHeight(0)  # Hide progress bar.
 
     def reset_buttons(self):
         self.ui.pushButton_add_coin.setEnabled(True)
