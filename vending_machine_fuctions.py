@@ -63,7 +63,7 @@ class VendingMachine:
 
         return price
 
-    def enough_money_check(self, price: str, chosen_product: str) -> str:
+    def enough_money_check(self, price: int, chosen_product: str) -> str:
         """Check if custumer inserted enough money.
         If not display appropriate message"""
 
