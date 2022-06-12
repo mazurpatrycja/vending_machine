@@ -2,7 +2,7 @@
     "coffee_machine": {
         "coffee": 150,
         "hot_chocolate": 100,
-        "Hot water": 50
+        "hot_water": 50
     },
     "drink_machine": {
         "coke": 120,
