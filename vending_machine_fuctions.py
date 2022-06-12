@@ -11,22 +11,20 @@ class VendingMachine:
         self.status = ""
 
         # Money for exchange
-        self.ones = 0  # The amount of: 1 Euro,
-        self.fifties = 0  # 50 Eurocent,
-        self.twenties = 0  # 20 Eurocent,
-        self.dimes = 0  # 10 Eurocent,
-        self.nickels = 0  # 5 Eurocent.
+        self.ones = 20  # The amount of: 1 Euro,
+        self.fifties = 20  # 50 Eurocent,
+        self.twenties = 20  # 20 Eurocent,
+        self.dimes = 20  # 10 Eurocent,
+        self.nickels = 20  # 5 Eurocent.
 
         self.welcome_message = (
             "Hello! Insert coins and choose product.\nMoney: "
         )
 
-    def check_and_add_coin(self, machine_type):
+    def check_and_add_coin(self, machine_type: str) -> None:
         coin = self.GUI.ui.comboBox.currentText()
         coin = coin.replace(" EUR", "")
-        coin = int(float(coin) * 100)  # Multiply to avoid float type
-
-        self.status = ""  # Reset status.
+        coin = int(float(coin) * 100)  # Multiply to avoid float format.
 
         # Prices are in cents to avoid float format.
         coffe_machine_coins = [100, 50]
@@ -56,16 +54,19 @@ class VendingMachine:
         self.money = sum(self.wallet)
         message = self.welcome_message + str(self.money / 100) + " EUR"
         self.GUI.threadclass.signal_change_status.emit(message)
+        return
 
-    def get_price(self, machine_type, chosen_product):
+    def get_price(self, machine_type: str, chosen_product: str) -> int:
         file = open("products.json")
         products = json.load(file)
-
         price = products[machine_type][chosen_product]
 
         return price
 
-    def enough_money_check(self, price, chosen_product):
+    def enough_money_check(self, price: str, chosen_product: str) -> str:
+        """Check if custumer inserted enough money.
+        If not display appropriate message"""
+
         if self.money < price:
             self.status = "Not Enough Money"
             message = (
@@ -80,7 +81,7 @@ class VendingMachine:
             self.GUI.threadclass.signal_disable_buttons.emit(chosen_product)
             return "YES"
 
-    def prepare_product_and_get_change(self, price):
+    def prepare_product_and_get_change(self, price: int) -> int:
         change = self.money - price
         change_dict = {}
 
@@ -137,6 +138,8 @@ class VendingMachine:
                 change -= 5 * self.nickels
                 self.nickels -= nickels
 
+        # When change is equal to 0, it means that costumer has inserted
+        # enough money or all change has already been given.
         if change == 0:
             # Prepare product.
             self.status = "Preparing ..."
@@ -170,7 +173,7 @@ class VendingMachine:
 
         return change
 
-    def take_money_and_reset_machine(self, change):
+    def take_money_and_reset_machine(self, change: int) -> None:
         # Add money to machine if the product was bought.
         if change == 0:
             for coin in self.wallet:
@@ -188,15 +191,16 @@ class VendingMachine:
         # Reset machine to unlock buying another product.
         self.wallet = []
         self.money = 0
-        time.sleep(2)
+        time.sleep(3)
         message = self.welcome_message + "0 EUR "
         self.GUI.threadclass.signal_change_status.emit(message)
         self.GUI.threadclass.signal_progress_bar.emit(-1)
         self.GUI.threadclass.signal_reset_buttons.emit()
 
-    def decline_purchase(self):
+    def decline_purchase(self) -> None:
         # Return all money to the customer.
         self.wallet = []
         self.money = 0
+
         message = self.welcome_message + str(self.money) + " EUR"
         self.GUI.threadclass.signal_change_status.emit(message)
