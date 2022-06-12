@@ -1,5 +1,5 @@
 import json
-import re
+import time
 
 
 class VendingMachine:
@@ -81,7 +81,7 @@ class VendingMachine:
             return "YES"
 
     def prepare_product_and_get_change(self, price):
-        change = round(self.money - price, 2)
+        change = self.money - price
         change_dict = {}
 
         # Check how many coins of each denominations are needed.
@@ -138,15 +138,35 @@ class VendingMachine:
                 self.nickels -= nickels
 
         if change == 0:
-            # Give the change.
-            print(change_dict)
-            self.status = (
-                "Bought product. Change: "
-                + str((self.money - price) / 100)
-                + " EU"
+            # Prepare product.
+            self.status = "Preparing ..."
+            message = (
+                self.welcome_message
+                + str(self.money / 100)
+                + " EUR "
+                + self.status
             )
+            self.GUI.threadclass.signal_change_status.emit(message)
+
+            # Update progress bar to simulate preparing product.
+            for i in [25, 50, 75, 100]:
+                time.sleep(1)
+                self.GUI.threadclass.signal_progress_bar.emit(i)
+
+            # Give the change.
+            self.status = "Change: " + str((self.money - price) / 100) + " EUR"
+            message = (
+                "Bought product.\n"
+                + "Money: "
+                + str(self.money / 100)
+                + " EUR "
+                + self.status
+            )
+            self.GUI.threadclass.signal_change_status.emit(message)
         else:
             self.status = "No change"
+            message = self.status + str(self.money / 100) + " EUR "
+            self.GUI.threadclass.signal_change_status.emit(message)
 
         return change
 

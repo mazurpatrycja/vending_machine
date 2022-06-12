@@ -31,6 +31,7 @@ class MainWindow(QWidget):
         # Thread signals.
         self.threadclass.signal_change_status.connect(self.change_status)
         self.threadclass.signal_disable_buttons.connect(self.disable_buttons)
+        self.threadclass.signal_progress_bar.connect(self.update_progress_bar)
 
     def change_behavior(self, next_behavior):
         self.behavior = next_behavior
@@ -55,6 +56,16 @@ class MainWindow(QWidget):
         self.ui.pushButton_cancel.setDisabled(True)
         self.ui.pushButton_add_coin.setDisabled(True)
 
+    def update_progress_bar(self, progress):
+        """A progress bar will appear if the progress is different than -1.
+        -1 value is used only to hide again progress bar"""
+        if progress != -1:
+            if self.ui.progressbar.height() == 0:
+                self.ui.progressbar.setMaximumHeight(28)  # Show progress bar.
+            self.ui.progressbar.setValue(progress)
+        else:
+            self.ui.progressbar.setMaximumHeight(0)
+
 
 class ThreadClass(QThread):
     def __init__(self, parent=MainWindow) -> None:
@@ -62,6 +73,7 @@ class ThreadClass(QThread):
 
     signal_change_status = Signal(str)
     signal_disable_buttons = Signal(str)
+    signal_progress_bar = Signal(int)
 
     def run(self):
         if window.behavior == "insert_coin":
@@ -73,6 +85,9 @@ class ThreadClass(QThread):
         if window.behavior == "make_coffe":
             price = gui_functions.get_price("coffee_machine", "coffee")
             answer = gui_functions.enough_money_check(price, "coffee")
+            if answer == "YES":
+                change = gui_functions.prepare_product_and_get_change(price)
+            # gui_functions.add_costumer_money_to_machine(change)
 
 
 if __name__ == "__main__":
