@@ -18,7 +18,7 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.setEnabled(True)
-        Form.resize(527, 430)
+        Form.resize(527, 459)
         Form.setMinimumSize(QSize(527, 430))
         Form.setMaximumSize(QSize(527, 459))
         Form.setStyleSheet(u"QWidget#Form{\n"
@@ -92,7 +92,7 @@ class Ui_Form(object):
         self.progressbar = QProgressBar(self.frame_12)
         self.progressbar.setObjectName(u"progressbar")
         self.progressbar.setMinimumSize(QSize(65, 0))
-        self.progressbar.setMaximumSize(QSize(65, 28))
+        self.progressbar.setMaximumSize(QSize(65, 0))
         self.progressbar.setStyleSheet(u"#progressbar {\n"
 "    border: 2px solid rgb(49, 191, 160);\n"
 "    border-radius: 5px;\n"
@@ -293,6 +293,7 @@ class Ui_Form(object):
 
         self.pushButton_add_coin = QPushButton(self.frame_2)
         self.pushButton_add_coin.setObjectName(u"pushButton_add_coin")
+        self.pushButton_add_coin.setEnabled(True)
         self.pushButton_add_coin.setMinimumSize(QSize(74, 28))
         self.pushButton_add_coin.setMaximumSize(QSize(74, 28))
         font1 = QFont()
@@ -311,7 +312,11 @@ class Ui_Form(object):
 "\n"
 "QPushButton:hover{\n"
 "	background-color: rgba(255, 255, 255, 30);\n"
+"}\n"
 "\n"
+"QPushButton:disabled {\n"
+"	color: rgb(105, 95, 148);\n"
+"	border-color: rgb(105, 95, 148);\n"
 "}\n"
 "\n"
 "QPushButton:pressed{\n"
@@ -357,6 +362,11 @@ class Ui_Form(object):
 "QPushButton:pressed{\n"
 "	background-color: rgba(18, 19, 48, 40);\n"
 "	border-color:rgb(54, 207, 174)\n"
+"}\n"
+"\n"
+"QPushButton:disabled {\n"
+"	color: rgb(105, 95, 148);\n"
+"	border-color: rgb(105, 95, 148);\n"
 "}")
 
         self.horizontalLayout_6.addWidget(self.pushButton_cancel)
@@ -382,7 +392,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.label_status.setText(QCoreApplication.translate("Form", u"Hello! Insert coins and choose product. \n"
-" Money: 1 EUR ", None))
+" Money: 0 EUR ", None))
         self.label_2.setText("")
         self.pushButton_coffee.setText(QCoreApplication.translate("Form", u"COFFEE - 1.50", None))
         self.label_3.setText("")

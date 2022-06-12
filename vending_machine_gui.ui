@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>527</width>
-    <height>430</height>
+    <height>459</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -124,7 +124,7 @@ background-color: rgb(32, 33, 84);</string>
               </property>
               <property name="text">
                <string>Hello! Insert coins and choose product. 
- Money: 1 EUR </string>
+ Money: 0 EUR </string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -185,7 +185,7 @@ background-color: rgb(32, 33, 84);</string>
               <property name="maximumSize">
                <size>
                 <width>65</width>
-                <height>28</height>
+                <height>0</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -572,6 +572,9 @@ QComboBox:!editable, QComboBox::drop-down:editable {
                </item>
                <item>
                 <widget class="QPushButton" name="pushButton_add_coin">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>74</width>
@@ -603,7 +606,11 @@ QComboBox:!editable, QComboBox::drop-down:editable {
 
 QPushButton:hover{
 	background-color: rgba(255, 255, 255, 30);
+}
 
+QPushButton:disabled {
+	color: rgb(105, 95, 148);
+	border-color: rgb(105, 95, 148);
 }
 
 QPushButton:pressed{
@@ -679,6 +686,11 @@ QPushButton:hover{
 QPushButton:pressed{
 	background-color: rgba(18, 19, 48, 40);
 	border-color:rgb(54, 207, 174)
+}
+
+QPushButton:disabled {
+	color: rgb(105, 95, 148);
+	border-color: rgb(105, 95, 148);
 }</string>
                  </property>
                  <property name="text">
