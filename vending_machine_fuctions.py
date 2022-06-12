@@ -1,4 +1,5 @@
 import json
+import re
 
 
 class VendingMachine:
@@ -16,7 +17,16 @@ class VendingMachine:
         self.dimes = 20  # 10 Eurocent,
         self.nickels = 20  # 5 Eurocent.
 
-    def check_and_add_coin(self, machine_type, coin):
+        self.welcome_message = (
+            "Hello! Insert coins and choose product. \n Money: "
+        )
+
+    def check_and_add_coin(self, machine_type):
+        coin = self.GUI.ui.comboBox.currentText()
+        coin = coin.replace(" EUR", "")
+        coin = int(float(coin) * 100)  # Multiply to avoid float type
+        print(coin)
+
         self.status = ""  # Reset status.
 
         # Prices are in cents to avoid float format.
@@ -32,10 +42,21 @@ class VendingMachine:
         elif machine_type == "snack_machine" and coin in snack_machine_coins:
             self.wallet.append(coin)
         else:
-            self.status = "Not Allowed Coin"
+            self.money = sum(self.wallet)
+            self.status = " Not Allowed Coin"
+            message = (
+                self.welcome_message
+                + str(self.money / 100)
+                + " EUR "
+                + self.status
+            )
+            self.GUI.threadclass.signal_change_status.emit(message)
+            return
 
         # Calculate how much money the customer has.
         self.money = sum(self.wallet)
+        message = self.welcome_message + str(self.money / 100) + " EUR"
+        self.GUI.threadclass.signal_change_status.emit(message)
 
     def get_price(self, machine_type, chosen_product):
         file = open("products.json")
@@ -139,18 +160,18 @@ class VendingMachine:
         self.money = 0
 
 
-if __name__ == "__main__":
-    machine = VendingMachine()
+# if __name__ == "__main__":
+#     machine = VendingMachine()
 
-    machine.check_and_add_coin("drink_machine", 100)
-    machine.check_and_add_coin("drink_machine", 50)
-    machine.check_and_add_coin("drink_machine", 75)
-    machine.check_and_add_coin("drink_machine", 500)
+#     machine.check_and_add_coin("drink_machine", 100)
+#     machine.check_and_add_coin("drink_machine", 50)
+#     machine.check_and_add_coin("drink_machine", 75)
+#     machine.check_and_add_coin("drink_machine", 500)
 
-    price = machine.get_price("drink_machine", "coke")
-    print("price:", price)
-    print("money", machine.money)
-    change = machine.buy_product_and_get_change(price)
-    machine.add_costumer_money_to_machine(change)
-    print(machine.ones)
-    print(machine.status)
+#     price = machine.get_price("drink_machine", "coke")
+#     print("price:", price)
+#     print("money", machine.money)
+#     change = machine.buy_product_and_get_change(price)
+#     machine.add_costumer_money_to_machine(change)
+#     print(machine.ones)
+#     print(machine.status)
