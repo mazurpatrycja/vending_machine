@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Coffee Machine</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#Form{

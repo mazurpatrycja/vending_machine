@@ -390,7 +390,7 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Coffee Machine", None))
         self.label_status.setText(QCoreApplication.translate("Form", u"Hello! Insert coins and choose product. \n"
 " Money: 0 EUR ", None))
         self.label_2.setText("")
