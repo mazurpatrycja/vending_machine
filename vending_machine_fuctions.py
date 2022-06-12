@@ -18,14 +18,13 @@ class VendingMachine:
         self.nickels = 20  # 5 Eurocent.
 
         self.welcome_message = (
-            "Hello! Insert coins and choose product. \n Money: "
+            "Hello! Insert coins and choose product.\nMoney: "
         )
 
     def check_and_add_coin(self, machine_type):
         coin = self.GUI.ui.comboBox.currentText()
         coin = coin.replace(" EUR", "")
         coin = int(float(coin) * 100)  # Multiply to avoid float type
-        print(coin)
 
         self.status = ""  # Reset status.
 
@@ -158,20 +157,5 @@ class VendingMachine:
         # Return all money to the customer.
         self.wallet = []
         self.money = 0
-
-
-# if __name__ == "__main__":
-#     machine = VendingMachine()
-
-#     machine.check_and_add_coin("drink_machine", 100)
-#     machine.check_and_add_coin("drink_machine", 50)
-#     machine.check_and_add_coin("drink_machine", 75)
-#     machine.check_and_add_coin("drink_machine", 500)
-
-#     price = machine.get_price("drink_machine", "coke")
-#     print("price:", price)
-#     print("money", machine.money)
-#     change = machine.buy_product_and_get_change(price)
-#     machine.add_costumer_money_to_machine(change)
-#     print(machine.ones)
-#     print(machine.status)
+        message = self.welcome_message + str(self.money) + " EUR"
+        self.GUI.threadclass.signal_change_status.emit(message)

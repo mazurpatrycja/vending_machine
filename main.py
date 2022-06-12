@@ -21,6 +21,9 @@ class MainWindow(QWidget):
         self.ui.pushButton_add_coin.clicked.connect(
             lambda: self.change_behavior("insert_coin")
         )
+        self.ui.pushButton_cancel.clicked.connect(
+            lambda: self.change_behavior("cancel_buying")
+        )
 
         # Thread signals.
         self.threadclass.signal_change_status.connect(self.change_status)
@@ -42,6 +45,8 @@ class ThreadClass(QThread):
     def run(self):
         if window.behavior == "insert_coin":
             gui_functions.check_and_add_coin("coffee_machine")
+        if window.behavior == "cancel_buying":
+            gui_functions.decline_purchase()
 
 
 if __name__ == "__main__":
