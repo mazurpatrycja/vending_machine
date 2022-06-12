@@ -1,0 +1,17 @@
+{
+    "coffee_machine": {
+        "coffee": 150,
+        "hot_chocolate": 100,
+        "hot_water": 50
+    },
+    "drink_machine": {
+        "coke": 120,
+        "water": 75
+    },
+    "snack_machine": {
+        "mms": 250,
+        "chips": 190,
+        "snickers": 130,
+        "pantera_rosa": 70
+    }
+}
