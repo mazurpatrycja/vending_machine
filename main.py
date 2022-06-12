@@ -27,6 +27,12 @@ class MainWindow(QWidget):
         self.ui.pushButton_coffee.clicked.connect(
             lambda: self.change_behavior("make_coffe")
         )
+        self.ui.pushButton_choco.clicked.connect(
+            lambda: self.change_behavior("make_choco")
+        )
+        self.ui.pushButton_water.clicked.connect(
+            lambda: self.change_behavior("make_water")
+        )
 
         # Thread signals.
         self.threadclass.signal_change_status.connect(self.change_status)
@@ -94,6 +100,20 @@ class ThreadClass(QThread):
         if window.behavior == "make_coffe":
             price = gui_functions.get_price("coffee_machine", "coffee")
             answer = gui_functions.enough_money_check(price, "coffee")
+            if answer == "YES":
+                change = gui_functions.prepare_product_and_get_change(price)
+                gui_functions.take_money_and_reset_machine(change)
+
+        if window.behavior == "make_choco":
+            price = gui_functions.get_price("coffee_machine", "hot_chocolate")
+            answer = gui_functions.enough_money_check(price, "hot_chocolate")
+            if answer == "YES":
+                change = gui_functions.prepare_product_and_get_change(price)
+                gui_functions.take_money_and_reset_machine(change)
+
+        if window.behavior == "make_water":
+            price = gui_functions.get_price("coffee_machine", "hot_water")
+            answer = gui_functions.enough_money_check(price, "hot_water")
             if answer == "YES":
                 change = gui_functions.prepare_product_and_get_change(price)
                 gui_functions.take_money_and_reset_machine(change)
