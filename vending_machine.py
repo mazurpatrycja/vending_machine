@@ -2,7 +2,9 @@ import json
 
 
 class VendingMachine:
-    def __init__(self) -> None:
+    def __init__(self, GUI) -> None:
+        self.GUI = GUI
+
         self.wallet = []
         self.money = 0  # Sum of money in the wallet
         self.status = ""
