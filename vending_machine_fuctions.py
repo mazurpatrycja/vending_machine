@@ -142,12 +142,15 @@ class VendingMachine:
         # enough money or all change has already been given.
         if change == 0:
             # Prepare product.
-            self.status = "Preparing ..."
+            self.status = "Preparing ...\n"
             message = (
-                self.welcome_message
+                self.status
+                + "Money: "
                 + str(self.money / 100)
                 + " EUR "
-                + self.status
+                + "Change: "
+                + str((self.money - price) / 100)
+                + " EUR"
             )
             self.GUI.threadclass.signal_change_status.emit(message)
 
